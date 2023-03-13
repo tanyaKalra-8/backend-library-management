@@ -13,6 +13,9 @@ import java.util.List;
 public class BookService {
 
     @Autowired
+    BookRepository bookRepository;
+
+    @Autowired
     AuthorRepository authorRepository;
 
 
@@ -34,5 +37,9 @@ public class BookService {
         // remember when CRUD operation is done on parent child also get affected
         authorRepository.save(author);
         return "Author added successfully";
+    }
+
+    public List<Book> getBooks() {
+        return bookRepository.findAll();
     }
 }

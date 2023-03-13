@@ -7,6 +7,9 @@ import com.backend.librarymanagementsystem.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class StudentService {
 
@@ -29,5 +32,22 @@ public class StudentService {
         //but visa-versa is not true
         //as we have written cascade in parent class only
         studentRepository.save(student);
+    }
+
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
+    }
+
+    public List<Student> getStudent(String name) {
+
+        List<Student> students1 = new ArrayList<>();
+        List<Student> students =  studentRepository.findAll();
+
+        for (Student student: students){
+            if (student.getName().toLowerCase().equals(name.toLowerCase())){
+                students1.add(student);
+            }
+        }
+        return students1;
     }
 }

@@ -1,6 +1,7 @@
 package com.backend.librarymanagementsystem.Entity;
 
 import com.backend.librarymanagementsystem.Enum.CardStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,5 +27,6 @@ public class LibraryCard {
 
     @OneToOne
     @JoinColumn
+    @JsonIgnore
     Student student;
 }
