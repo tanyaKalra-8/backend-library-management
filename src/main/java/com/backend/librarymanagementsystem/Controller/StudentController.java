@@ -1,5 +1,6 @@
 package com.backend.librarymanagementsystem.Controller;
 
+import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
 import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
 import com.backend.librarymanagementsystem.Entity.Student;
@@ -17,8 +18,8 @@ public class StudentController {
     StudentService studentService;
 
     @PostMapping("/add")
-    public String addStudent(@RequestBody Student student){
-        studentService.addStudent(student);
+    public String addStudent(@RequestBody StudentRequestDto studentRequestDto){
+        studentService.addStudent(studentRequestDto);
         return "Student has been added";
     }
 

@@ -3,9 +3,14 @@ package com.backend.librarymanagementsystem.Entity;
 import com.backend.librarymanagementsystem.Enum.CardStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor //default constructor
@@ -18,10 +23,14 @@ public class LibraryCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String validTill;
-
     @Enumerated(EnumType.STRING)
     private CardStatus status;
+
+    @CreationTimestamp
+    private Date creationDate;
+
+    @UpdateTimestamp
+    private Date updationDate;
 
     //student card relation
 
@@ -29,4 +38,10 @@ public class LibraryCard {
     @JoinColumn
     @JsonIgnore
     Student student;
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+    List<Transaction> transactionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+    List<Book> booksIssued = new ArrayList<>();
 }

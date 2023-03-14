@@ -1,5 +1,7 @@
 package com.backend.librarymanagementsystem.Service;
 
+import com.backend.librarymanagementsystem.DTO.BookRequestDto;
+import com.backend.librarymanagementsystem.DTO.BookResponseDto;
 import com.backend.librarymanagementsystem.Entity.Author;
 import com.backend.librarymanagementsystem.Entity.Book;
 import com.backend.librarymanagementsystem.Repository.AuthorRepository;
@@ -19,24 +21,35 @@ public class BookService {
     AuthorRepository authorRepository;
 
 
-    public String addBook(Book book) throws Exception {
+    public BookResponseDto addBook(BookRequestDto bookRequestDto) {
 
-        Author author;
+        //getting the author
+        Author author = authorRepository.findById(bookRequestDto.getAuthorId()).get();
 
-        try {
-            author = authorRepository.findById(book.getAuthor().getId()).get();
-        }
-        catch (Exception e){
-            return "Author not added "+ e.getMessage();
-        }
+        //creating the book object
+        Book book = new Book();
+        //setting the values
+        book.setTitle(bookRequestDto.getTitle());
+        book.setGenre(bookRequestDto.getGenre());
+        book.setPrice(bookRequestDto.getPrice());
+        book.setIssued(false);
+        book.setAuthor(author);
 
+        //fetching the existing lists of books
         List<Book> booksWritten = author.getBooks();
+        //updating the list
         booksWritten.add(book);
 
         //saving the author so the books added can get saved
         // remember when CRUD operation is done on parent child also get affected
         authorRepository.save(author);
-        return "Author added successfully";
+
+        //creating response dto
+        BookResponseDto bookResponseDto = new BookResponseDto();
+        bookResponseDto.setTitle(book.getTitle());
+        bookResponseDto.setPrice(book.getPrice());
+
+        return bookResponseDto;
     }
 
     public List<Book> getBooks() {
