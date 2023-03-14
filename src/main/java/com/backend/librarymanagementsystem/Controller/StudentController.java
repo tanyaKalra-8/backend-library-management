@@ -1,5 +1,7 @@
 package com.backend.librarymanagementsystem.Controller;
 
+import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
+import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
 import com.backend.librarymanagementsystem.Entity.Student;
 import com.backend.librarymanagementsystem.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,11 @@ public class StudentController {
     @GetMapping("/get_student_by_age")
     public List<Student> getStudentByAge(@RequestParam("age") int age){
         return studentService.getStudentByAge(age);
+    }
+
+    @PutMapping("/update_email")
+    public StudentResponseDto updateMob(@RequestBody StudentUpdateEmailRequestDto studentUpdateEmailRequestDto){
+        return studentService.updateEmail(studentUpdateEmailRequestDto);
     }
 
     @DeleteMapping("/delete_student_by_id")

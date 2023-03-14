@@ -1,5 +1,7 @@
 package com.backend.librarymanagementsystem.Service;
 
+import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
+import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
 import com.backend.librarymanagementsystem.Entity.LibraryCard;
 import com.backend.librarymanagementsystem.Entity.Student;
 import com.backend.librarymanagementsystem.Enum.CardStatus;
@@ -7,7 +9,6 @@ import com.backend.librarymanagementsystem.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,5 +57,26 @@ public class StudentService {
 
     public List<Student> getStudentByAge(int age) {
         return studentRepository.findByAge(age);
+    }
+
+    public StudentResponseDto updateEmail(StudentUpdateEmailRequestDto studentUpdateEmailRequestDto) {
+
+        Student student = studentRepository.findById(studentUpdateEmailRequestDto.getId()).get();
+        student.setEmail(studentUpdateEmailRequestDto.getEmail());
+
+        //update step
+        Student updatedStudent = studentRepository.save(student);
+
+        //convert updated student to DTO
+        //creating new Dto response object
+        StudentResponseDto studentResponseDto =  new StudentResponseDto();
+
+        //setting the values
+        studentResponseDto.setId(updatedStudent.getId());
+        studentResponseDto.setName(updatedStudent.getName());
+        studentResponseDto.setEmail(updatedStudent.getEmail());
+
+        //returning the updated dta
+        return studentResponseDto;
     }
 }
