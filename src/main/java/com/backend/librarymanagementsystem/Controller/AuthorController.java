@@ -1,5 +1,7 @@
 package com.backend.librarymanagementsystem.Controller;
 
+import com.backend.librarymanagementsystem.DTO.AuthorRequestDto;
+import com.backend.librarymanagementsystem.DTO.AuthorResponseDto;
 import com.backend.librarymanagementsystem.Entity.Author;
 import com.backend.librarymanagementsystem.Service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,8 @@ public class AuthorController {
     AuthorService authorService;
 
     @PostMapping("/add")
-    public String addAuthor(@RequestBody Author author){
-        authorService.addAuthor(author);
-        return "Author added successfully. Your Id is: "+ author.getId();
+    public AuthorResponseDto addAuthor(@RequestBody AuthorRequestDto authorRequestDto){
+        return authorService.addAuthor(authorRequestDto);
     }
 
     @GetMapping("/get_authors")
