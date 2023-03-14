@@ -26,6 +26,7 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private Department department;
 
+    @Column(unique = true)
     private String email;
 
     //used cascade to generate card automatically

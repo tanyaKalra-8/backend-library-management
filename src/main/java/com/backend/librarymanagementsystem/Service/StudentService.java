@@ -39,15 +39,22 @@ public class StudentService {
     }
 
     public List<Student> getStudent(String name) {
+        return studentRepository.findByName(name);
+    }
 
-        List<Student> students1 = new ArrayList<>();
-        List<Student> students =  studentRepository.findAll();
+    public Student getStudentByEmail(String email) {
+        return studentRepository.findByEmail(email);
+    }
 
-        for (Student student: students){
-            if (student.getName().toLowerCase().equals(name.toLowerCase())){
-                students1.add(student);
-            }
-        }
-        return students1;
+    public void deleteStudentById(int id) {
+        studentRepository.deleteById(id);
+    }
+
+    public void deleteAll() {
+        studentRepository.deleteAll();
+    }
+
+    public List<Student> getStudentByAge(int age) {
+        return studentRepository.findByAge(age);
     }
 }
