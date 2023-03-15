@@ -11,6 +11,8 @@ import com.backend.librarymanagementsystem.Repository.BookRepository;
 import com.backend.librarymanagementsystem.Repository.CardRepository;
 import com.backend.librarymanagementsystem.Repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -26,6 +28,10 @@ public class TransactionService {
 
     @Autowired
     TransactionRepository transactionRepository;
+
+    //for automatic email
+    @Autowired
+    private JavaMailSender emailSender;
 
     public IssueBookResponseDto issueBook(IssueBookRequestDto issueBookRequestDto)throws Exception{
 
@@ -106,6 +112,23 @@ public class TransactionService {
         issueBookResponseDto.setBookName(book.getTitle());
         issueBookResponseDto.setTransactionId(transaction.getTransactionNumber());
         issueBookResponseDto.setTransactionStatus(transaction.getTransactionStatus());
+
+
+        //send an email automatically
+        String line1 = "Hey " + card.getStudent().getName()+ "!";
+        String line2 = "Thank you for choosing us!! " + transaction.getBook().getTitle() + " by " + transaction.getBook().getAuthor().getName() + " has been issued to you for " + transaction.getBook().getPrice() + ". Payment will be deducted automatically from your PNB account within 24 hours.";
+        String line4 = "We wanted to take a moment to thank you for choosing Bright Bookstore as your source for education. It was our pleasure to assist you in finding the book you were looking for, and we hope that it has been a valuable addition to your study collection.";
+        String line5 = "Best regards,\n" +
+                "\n" +
+                "Bright Bookstore Team";
+        String text = line1 + "\n"+ "\n" + line2 + "\n" + "\n" + line4 + "\n"+ "\n" + line5;
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@baeldung.com");
+        message.setTo(card.getStudent().getEmail());
+        message.setSubject("Book successfully Issued");
+        message.setText(text);
+        emailSender.send(message);
 
         return issueBookResponseDto;
     }
