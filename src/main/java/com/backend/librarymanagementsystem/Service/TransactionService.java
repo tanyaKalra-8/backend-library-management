@@ -15,6 +15,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -131,5 +132,15 @@ public class TransactionService {
         emailSender.send(message);
 
         return issueBookResponseDto;
+    }
+
+    public String getAllTxns(int cardId) {
+        List<Transaction> transactionList = transactionRepository.getAllSuccessfullTxnsWithCardId(cardId);
+        String ans = "";
+        for (Transaction transaction: transactionList){
+            ans+= transaction.getTransactionNumber();
+            ans+="\n";
+        }
+        return ans;
     }
 }
