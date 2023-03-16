@@ -9,12 +9,14 @@ import com.backend.librarymanagementsystem.Entity.LibraryCard;
 import com.backend.librarymanagementsystem.Entity.Transaction;
 import com.backend.librarymanagementsystem.Enum.CardStatus;
 import com.backend.librarymanagementsystem.Enum.TransactionStatus;
+import com.backend.librarymanagementsystem.Exception.BookAlreadyIssuedException;
+import com.backend.librarymanagementsystem.Exception.CardNotActivatedException;
+import com.backend.librarymanagementsystem.Exception.InvalidBookIdException;
+import com.backend.librarymanagementsystem.Exception.InvalidCardIdException;
 import com.backend.librarymanagementsystem.Repository.BookRepository;
 import com.backend.librarymanagementsystem.Repository.CardRepository;
 import com.backend.librarymanagementsystem.Repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +38,7 @@ public class TransactionService {
 //    @Autowired
 //    private JavaMailSender emailSender;
 
-    public IssueBookResponseDto issueBook(IssueBookRequestDto issueBookRequestDto)throws Exception{
+    public IssueBookResponseDto issueBook(IssueBookRequestDto issueBookRequestDto)throws InvalidCardIdException, InvalidBookIdException,CardNotActivatedException, BookAlreadyIssuedException {
 
         //Creating transaction object
         Transaction transaction = new Transaction();
@@ -55,7 +57,7 @@ public class TransactionService {
             //function will return from here so I have to save the transaction
             transaction.setMessage("Invalid card ID");
             transactionRepository.save(transaction);
-            throw new Exception("Invalid card ID");
+            throw new InvalidCardIdException("Invalid card ID");
         }
 
         Book book;
@@ -67,7 +69,7 @@ public class TransactionService {
             //function will return from here so I have to save the transaction
             transaction.setMessage("Invalid book ID");
             transactionRepository.save(transaction);
-            throw new Exception("Invalid book ID");
+            throw new InvalidBookIdException("Invalid book ID");
         }
 
 
@@ -84,7 +86,7 @@ public class TransactionService {
             //function will return from here so I have to save the transaction
             transaction.setMessage("Your card is not activated");
             transactionRepository.save(transaction);
-            throw new Exception("Your card is not activated");
+            throw new CardNotActivatedException("Your card is not activated");
         }
 
         if (book.isIssued()){
@@ -92,7 +94,7 @@ public class TransactionService {
             //function will return from here so I have to save the transaction
             transaction.setMessage("Sorry! Book is already issued");
             transactionRepository.save(transaction);
-            throw new Exception("Sorry! Book is already issued");
+            throw new BookAlreadyIssuedException("Sorry! Book is already issued");
         }
 
         //I can Issue the book
@@ -131,7 +133,7 @@ public class TransactionService {
     }
 
 
-    public ReturnBookResponseDto returnBook(ReturnBookRequestDto returnBookRequestDto) throws Exception{
+    public ReturnBookResponseDto returnBook(ReturnBookRequestDto returnBookRequestDto) throws InvalidCardIdException, InvalidBookIdException, BookAlreadyIssuedException{
 
         Transaction transaction = new Transaction();
 
@@ -149,7 +151,7 @@ public class TransactionService {
             //function will return from here so I have to save the transaction
             transaction.setMessage("Invalid card ID");
             transactionRepository.save(transaction);
-            throw new Exception("Invalid card ID");
+            throw new InvalidCardIdException("Invalid card ID");
         }
 
         Book book;
@@ -161,7 +163,7 @@ public class TransactionService {
             //function will return from here so I have to save the transaction
             transaction.setMessage("Invalid book ID");
             transactionRepository.save(transaction);
-            throw new Exception("Invalid book ID");
+            throw new InvalidBookIdException("Invalid book ID");
         }
 
 
@@ -178,7 +180,7 @@ public class TransactionService {
             //function will return from here so I have to save the transaction
             transaction.setMessage("Sorry! Book is not issued");
             transactionRepository.save(transaction);
-            throw new Exception("Sorry! Book is not issued");
+            throw new BookAlreadyIssuedException("Sorry! Book is not issued");
         }
         //I can return the book now
         transaction.setTransactionStatus(TransactionStatus.SUCCESS);
@@ -209,7 +211,7 @@ public class TransactionService {
         List<Transaction> transactionList = transactionRepository.getAllSuccessfullTxnsWithCardId(cardId);
         String ans = "";
         for (Transaction transaction: transactionList){
-            ans+= transaction.getTransactionNumber();
+            ans += transaction.getTransactionNumber();
             ans+="\n";
         }
         return ans;
