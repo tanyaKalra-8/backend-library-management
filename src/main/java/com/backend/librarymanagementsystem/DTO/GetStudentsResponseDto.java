@@ -7,15 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class AllStudentsResponseDto {
+public class GetStudentsResponseDto {
 
     private String name;
     private int age;

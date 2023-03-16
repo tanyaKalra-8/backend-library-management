@@ -1,6 +1,6 @@
 package com.backend.librarymanagementsystem.Controller;
 
-import com.backend.librarymanagementsystem.DTO.AllStudentsResponseDto;
+import com.backend.librarymanagementsystem.DTO.GetStudentsResponseDto;
 import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
 import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
@@ -25,23 +25,23 @@ public class StudentController {
     }
 
     @GetMapping("/get_students")
-    public List<AllStudentsResponseDto> getStudents(){
+    public List<GetStudentsResponseDto> getStudents(){
         return studentService.getStudents();
     }
 
     //get all students by name
     @GetMapping("/get_student_name")
-    public List<Student> getStudent(@RequestParam("name") String name){
+    public List<GetStudentsResponseDto> getStudent(@RequestParam("name") String name){
         return studentService.getStudent(name);
     }
 
     @GetMapping("/get_student_email")
-    public Student getStudentByEmail(@RequestParam("email") String email){
+    public GetStudentsResponseDto getStudentByEmail(@RequestParam("email") String email){
         return studentService.getStudentByEmail(email);
     }
 
     @GetMapping("/get_student_by_age")
-    public List<Student> getStudentByAge(@RequestParam("age") int age){
+    public List<GetStudentsResponseDto> getStudentByAge(@RequestParam("age") int age){
         return studentService.getStudentByAge(age);
     }
 
