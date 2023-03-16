@@ -2,6 +2,8 @@ package com.backend.librarymanagementsystem.Controller;
 
 import com.backend.librarymanagementsystem.DTO.IssueBookRequestDto;
 import com.backend.librarymanagementsystem.DTO.IssueBookResponseDto;
+import com.backend.librarymanagementsystem.DTO.ReturnBookRequestDto;
+import com.backend.librarymanagementsystem.DTO.ReturnBookResponseDto;
 import com.backend.librarymanagementsystem.Entity.Transaction;
 import com.backend.librarymanagementsystem.Service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,20 @@ public class TransactionController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(issueBookResponseDto, HttpStatus.ACCEPTED);
+    }
+
+
+    @PostMapping("/return")
+    public ResponseEntity returnBook(@RequestBody ReturnBookRequestDto returnBookRequestDto){
+
+        ReturnBookResponseDto returnBookResponseDto;
+        try {
+            returnBookResponseDto = transactionService.returnBook(returnBookRequestDto);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(returnBookResponseDto,HttpStatus.OK);
     }
 
     @GetMapping("/get")

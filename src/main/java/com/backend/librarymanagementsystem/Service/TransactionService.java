@@ -2,6 +2,8 @@ package com.backend.librarymanagementsystem.Service;
 
 import com.backend.librarymanagementsystem.DTO.IssueBookRequestDto;
 import com.backend.librarymanagementsystem.DTO.IssueBookResponseDto;
+import com.backend.librarymanagementsystem.DTO.ReturnBookRequestDto;
+import com.backend.librarymanagementsystem.DTO.ReturnBookResponseDto;
 import com.backend.librarymanagementsystem.Entity.Book;
 import com.backend.librarymanagementsystem.Entity.LibraryCard;
 import com.backend.librarymanagementsystem.Entity.Transaction;
@@ -126,6 +128,81 @@ public class TransactionService {
 //        emailSender.send(message);
 
         return issueBookResponseDto;
+    }
+
+
+    public ReturnBookResponseDto returnBook(ReturnBookRequestDto returnBookRequestDto) throws Exception{
+
+        Transaction transaction = new Transaction();
+
+        transaction.setTransactionNumber(String.valueOf(UUID.randomUUID()));
+        transaction.setIssueOperation(false);
+
+        //get card and book object
+        //if id not found it will return exception so try and catch
+        LibraryCard card;
+        try{
+            card = cardRepository.findById(returnBookRequestDto.getCardId()).get();
+        }
+        catch(Exception e){
+            transaction.setTransactionStatus(TransactionStatus.FAILED);
+            //function will return from here so I have to save the transaction
+            transaction.setMessage("Invalid card ID");
+            transactionRepository.save(transaction);
+            throw new Exception("Invalid card ID");
+        }
+
+        Book book;
+        try{
+            book = bookRepository.findById(returnBookRequestDto.getBookId()).get();
+        }
+        catch(Exception e){
+            transaction.setTransactionStatus(TransactionStatus.FAILED);
+            //function will return from here so I have to save the transaction
+            transaction.setMessage("Invalid book ID");
+            transactionRepository.save(transaction);
+            throw new Exception("Invalid book ID");
+        }
+
+
+        //both card and book are valid
+        transaction.setBook(book);
+        transaction.setCard(card);
+
+        // * condition to issue a book
+        // 1--> book should be issued
+
+
+        if (!book.isIssued()){
+            transaction.setTransactionStatus(TransactionStatus.FAILED);
+            //function will return from here so I have to save the transaction
+            transaction.setMessage("Sorry! Book is not issued");
+            transactionRepository.save(transaction);
+            throw new Exception("Sorry! Book is not issued");
+        }
+        //I can return the book now
+        transaction.setTransactionStatus(TransactionStatus.SUCCESS);
+        transaction.setMessage("Transaction success");
+
+        book.setIssued(false);
+        book.setCard(null);
+        book.getTransaction().add(transaction);
+
+        card.getTransactionList().add(transaction);
+        card.getBooksIssued().remove(book);
+
+        //card is parent of book and transaction
+        //so just saving card entity will save book and transaction as well
+        cardRepository.save(card);
+
+        //returning object
+        ReturnBookResponseDto returnBookResponseDto = new ReturnBookResponseDto();
+
+        //setting the values
+        returnBookResponseDto.setTransactionNo(transaction.getTransactionNumber());
+        returnBookResponseDto.setMessage("Book successfully returned");
+
+        return returnBookResponseDto;
     }
 
     public String getAllTxns(int cardId) {
