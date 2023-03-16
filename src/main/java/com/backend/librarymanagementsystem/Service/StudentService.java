@@ -1,5 +1,6 @@
 package com.backend.librarymanagementsystem.Service;
 
+import com.backend.librarymanagementsystem.DTO.AllStudentsResponseDto;
 import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
 import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
@@ -10,6 +11,7 @@ import com.backend.librarymanagementsystem.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,8 +46,22 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
+    public List<AllStudentsResponseDto> getStudents() {
+        List<Student> studentList = studentRepository.findAll();
+        List<AllStudentsResponseDto> allStudentsResponseDtos = new ArrayList<>();
+        AllStudentsResponseDto allStudentsResponseDto;
+
+        for (Student student: studentList){
+            allStudentsResponseDto = new AllStudentsResponseDto();
+            allStudentsResponseDto.setName(student.getName());
+            allStudentsResponseDto.setAge(student.getAge());
+            allStudentsResponseDto.setDepartment(student.getDepartment());
+            allStudentsResponseDto.setEmail(student.getEmail());
+            allStudentsResponseDto.setCard(student.getCard());
+
+            allStudentsResponseDtos.add(allStudentsResponseDto);
+        }
+        return allStudentsResponseDtos;
     }
 
     public List<Student> getStudent(String name) {

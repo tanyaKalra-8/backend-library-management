@@ -1,5 +1,6 @@
 package com.backend.librarymanagementsystem.Controller;
 
+import com.backend.librarymanagementsystem.DTO.AllStudentsResponseDto;
 import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
 import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
@@ -24,7 +25,7 @@ public class StudentController {
     }
 
     @GetMapping("/get_students")
-    public List<Student> getStudents(){
+    public List<AllStudentsResponseDto> getStudents(){
         return studentService.getStudents();
     }
 

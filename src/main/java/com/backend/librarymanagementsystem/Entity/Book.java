@@ -39,5 +39,6 @@ public class Book {
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     LibraryCard card;
 }
