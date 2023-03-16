@@ -1,10 +1,8 @@
 package com.backend.librarymanagementsystem.Controller;
 
-import com.backend.librarymanagementsystem.DTO.GetStudentsResponseDto;
-import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
+import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
-import com.backend.librarymanagementsystem.Entity.Student;
 import com.backend.librarymanagementsystem.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,23 +23,23 @@ public class StudentController {
     }
 
     @GetMapping("/get_students")
-    public List<GetStudentsResponseDto> getStudents(){
+    public List<StudentResponseDto> getStudents(){
         return studentService.getStudents();
     }
 
     //get all students by name
     @GetMapping("/get_student_name")
-    public List<GetStudentsResponseDto> getStudent(@RequestParam("name") String name){
+    public List<StudentResponseDto> getStudent(@RequestParam("name") String name){
         return studentService.getStudent(name);
     }
 
     @GetMapping("/get_student_email")
-    public GetStudentsResponseDto getStudentByEmail(@RequestParam("email") String email){
+    public StudentResponseDto getStudentByEmail(@RequestParam("email") String email){
         return studentService.getStudentByEmail(email);
     }
 
     @GetMapping("/get_student_by_age")
-    public List<GetStudentsResponseDto> getStudentByAge(@RequestParam("age") int age){
+    public List<StudentResponseDto> getStudentByAge(@RequestParam("age") int age){
         return studentService.getStudentByAge(age);
     }
 

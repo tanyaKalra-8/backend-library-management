@@ -23,7 +23,7 @@ public class BookController {
     }
 
     @GetMapping("/get_books")
-    public List<Book> getBooks(){
+    public List<BookResponseDto> getBooks(){
         return bookService.getBooks();
     }
 }

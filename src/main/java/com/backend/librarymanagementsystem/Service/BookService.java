@@ -9,6 +9,7 @@ import com.backend.librarymanagementsystem.Repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,7 +53,19 @@ public class BookService {
         return bookResponseDto;
     }
 
-    public List<Book> getBooks() {
-        return bookRepository.findAll();
+    public List<BookResponseDto> getBooks() {
+        List<Book> bookList = bookRepository.findAll();
+        List<BookResponseDto> bookResponseDtos = new ArrayList<>();
+        BookResponseDto bookResponseDto;
+
+        for (Book book: bookList){
+            bookResponseDto = new BookResponseDto();
+            bookResponseDto.setPrice(book.getPrice());
+            bookResponseDto.setTitle(book.getTitle());
+
+
+            bookResponseDtos.add(bookResponseDto);
+        }
+        return bookResponseDtos;
     }
 }

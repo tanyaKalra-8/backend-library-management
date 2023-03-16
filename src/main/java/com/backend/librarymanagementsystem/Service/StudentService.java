@@ -1,8 +1,7 @@
 package com.backend.librarymanagementsystem.Service;
 
-import com.backend.librarymanagementsystem.DTO.GetStudentsResponseDto;
-import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentResponseDto;
+import com.backend.librarymanagementsystem.DTO.StudentRequestDto;
 import com.backend.librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
 import com.backend.librarymanagementsystem.Entity.LibraryCard;
 import com.backend.librarymanagementsystem.Entity.Student;
@@ -46,53 +45,53 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public List<GetStudentsResponseDto> getStudents() {
+    public List<StudentResponseDto> getStudents() {
         List<Student> studentList = studentRepository.findAll();
-        List<GetStudentsResponseDto> getStudentsResponseDtos = new ArrayList<>();
-        GetStudentsResponseDto getStudentsResponseDto;
+        List<StudentResponseDto> studentResponseDtos = new ArrayList<>();
+        StudentResponseDto studentResponseDto;
 
         for (Student student: studentList){
-            getStudentsResponseDto = new GetStudentsResponseDto();
-            getStudentsResponseDto.setName(student.getName());
-            getStudentsResponseDto.setAge(student.getAge());
-            getStudentsResponseDto.setDepartment(student.getDepartment());
-            getStudentsResponseDto.setEmail(student.getEmail());
-            getStudentsResponseDto.setCard(student.getCard());
+            studentResponseDto = new StudentResponseDto();
+            studentResponseDto.setName(student.getName());
+            studentResponseDto.setAge(student.getAge());
+            studentResponseDto.setDepartment(student.getDepartment());
+            studentResponseDto.setEmail(student.getEmail());
+            studentResponseDto.setCard(student.getCard());
 
-            getStudentsResponseDtos.add(getStudentsResponseDto);
+            studentResponseDtos.add(studentResponseDto);
         }
-        return getStudentsResponseDtos;
+        return studentResponseDtos;
     }
 
-    public List<GetStudentsResponseDto> getStudent(String name) {
+    public List<StudentResponseDto> getStudent(String name) {
         List<Student> studentList= studentRepository.findByName(name);
-        List<GetStudentsResponseDto> getStudentsResponseDtos = new ArrayList<>();
-        GetStudentsResponseDto getStudentsResponseDto;
+        List<StudentResponseDto> studentResponseDtos = new ArrayList<>();
+        StudentResponseDto studentResponseDto;
 
         for (Student student: studentList){
-            getStudentsResponseDto = new GetStudentsResponseDto();
-            getStudentsResponseDto.setName(student.getName());
-            getStudentsResponseDto.setAge(student.getAge());
-            getStudentsResponseDto.setDepartment(student.getDepartment());
-            getStudentsResponseDto.setEmail(student.getEmail());
-            getStudentsResponseDto.setCard(student.getCard());
+            studentResponseDto = new StudentResponseDto();
+            studentResponseDto.setName(student.getName());
+            studentResponseDto.setAge(student.getAge());
+            studentResponseDto.setDepartment(student.getDepartment());
+            studentResponseDto.setEmail(student.getEmail());
+            studentResponseDto.setCard(student.getCard());
 
-            getStudentsResponseDtos.add(getStudentsResponseDto);
+            studentResponseDtos.add(studentResponseDto);
         }
-        return getStudentsResponseDtos;
+        return studentResponseDtos;
     }
 
-    public GetStudentsResponseDto getStudentByEmail(String email) {
+    public StudentResponseDto getStudentByEmail(String email) {
         Student student = studentRepository.findByEmail(email);
 
-        GetStudentsResponseDto getStudentsResponseDto = new GetStudentsResponseDto();
-        getStudentsResponseDto.setName(student.getName());
-        getStudentsResponseDto.setAge(student.getAge());
-        getStudentsResponseDto.setDepartment(student.getDepartment());
-        getStudentsResponseDto.setEmail(student.getEmail());
-        getStudentsResponseDto.setCard(student.getCard());
+        StudentResponseDto studentResponseDto = new StudentResponseDto();
+        studentResponseDto.setName(student.getName());
+        studentResponseDto.setAge(student.getAge());
+        studentResponseDto.setDepartment(student.getDepartment());
+        studentResponseDto.setEmail(student.getEmail());
+        studentResponseDto.setCard(student.getCard());
 
-        return getStudentsResponseDto;
+        return studentResponseDto;
     }
 
     public void deleteStudentById(int id) {
@@ -103,22 +102,22 @@ public class StudentService {
         studentRepository.deleteAll();
     }
 
-    public List<GetStudentsResponseDto> getStudentByAge(int age) {
+    public List<StudentResponseDto> getStudentByAge(int age) {
         List<Student> studentList = studentRepository.findByAge(age);
-        List<GetStudentsResponseDto> getStudentsResponseDtos = new ArrayList<>();
-        GetStudentsResponseDto getStudentsResponseDto;
+        List<StudentResponseDto> studentResponseDtos = new ArrayList<>();
+        StudentResponseDto studentResponseDto;
 
         for (Student student: studentList){
-            getStudentsResponseDto = new GetStudentsResponseDto();
-            getStudentsResponseDto.setName(student.getName());
-            getStudentsResponseDto.setAge(student.getAge());
-            getStudentsResponseDto.setDepartment(student.getDepartment());
-            getStudentsResponseDto.setEmail(student.getEmail());
-            getStudentsResponseDto.setCard(student.getCard());
+            studentResponseDto = new StudentResponseDto();
+            studentResponseDto.setName(student.getName());
+            studentResponseDto.setAge(student.getAge());
+            studentResponseDto.setDepartment(student.getDepartment());
+            studentResponseDto.setEmail(student.getEmail());
+            studentResponseDto.setCard(student.getCard());
 
-            getStudentsResponseDtos.add(getStudentsResponseDto);
+            studentResponseDtos.add(studentResponseDto);
         }
-        return getStudentsResponseDtos;
+        return studentResponseDtos;
     }
 
     public StudentResponseDto updateEmail(StudentUpdateEmailRequestDto studentUpdateEmailRequestDto) {
@@ -134,9 +133,11 @@ public class StudentService {
         StudentResponseDto studentResponseDto =  new StudentResponseDto();
 
         //setting the values
-        studentResponseDto.setId(updatedStudent.getId());
-        studentResponseDto.setName(updatedStudent.getName());
-        studentResponseDto.setEmail(updatedStudent.getEmail());
+        studentResponseDto.setName(student.getName());
+        studentResponseDto.setAge(student.getAge());
+        studentResponseDto.setDepartment(student.getDepartment());
+        studentResponseDto.setEmail(student.getEmail());
+        studentResponseDto.setCard(student.getCard());
 
         //returning the updated dta
         return studentResponseDto;
